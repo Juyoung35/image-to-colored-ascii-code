@@ -2,7 +2,7 @@
 This program converts image file to ascii code texts such as .txt, .rtf, .docs, .html
 
 # how to run this program
-do `python run.py -h' in terminal to get help about running run.py
+do `python run.py -h` in terminal to get help about running run.py
 
 # Image Reference
 - Sample Image 0: sample-image-0.jpg by [Sharon Pittaway](https://unsplash.com/photos/iMdsjoiftZo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)

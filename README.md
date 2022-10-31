@@ -27,7 +27,7 @@ Sample Image 1: sample-image-1.png in [site](https://www.pngkey.com/maxpic/u2t4y
 - [youtube Easy Python PIL Tutorial](https://www.youtube.com/watch?v=v_raWlX7tZY&ab_channel=Kite)
 
 # get output file with cli
-- sample-image-0.txt: python run.py input/sample-image-0.jpg -s 0.04 -d output/sample-image-0 -f txt
-- sample-image-0.rtf: python run.py input/sample-image-0.jpg -s 0.08 -d output/sample-image-0 -f rtf -p 8 -rs LANCZOS -fs 2
-- sample-image-1.txt: python run.py input/sample-image-1.png -s 0.04 -d output/sample-image-1 -f txt
-- sample-image-1.rtf: python run.py input/sample-image-1.png -s 0.08 -d output/sample-image-1 -f rtf -p 8 -rs LANCZOS -fs 2
+- sample-image-0.txt: `python run.py input/sample-image-0.jpg -s 0.04 -d output/sample-image-0 -f txt`
+- sample-image-0.rtf: `python run.py input/sample-image-0.jpg -s 0.08 -d output/sample-image-0 -f rtf -p 8 -rs LANCZOS -fs 2`
+- sample-image-1.txt: `python run.py input/sample-image-1.png -s 0.04 -d output/sample-image-1 -f txt`
+- sample-image-1.rtf: `python run.py input/sample-image-1.png -s 0.08 -d output/sample-image-1 -f rtf -p 8 -rs LANCZOS -fs 2`

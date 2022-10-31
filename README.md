@@ -17,8 +17,8 @@ If DEST and FORMAT are not given, then it will return output with slightly diffe
 Available FORMAT: .txt, .docx, .rtf, .html
 
 # Image Reference
-Sample Image 0: sample-image-0.jpg by [Sharon Pittaway](https://unsplash.com/photos/iMdsjoiftZo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
-Sample Image 1: sample-image-1.png in [site](https://www.pngkey.com/maxpic/u2t4y3q8q8q8u2a9/)
+- Sample Image 0: sample-image-0.jpg by [Sharon Pittaway](https://unsplash.com/photos/iMdsjoiftZo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
+- Sample Image 1: sample-image-1.png in [site](https://www.pngkey.com/maxpic/u2t4y3q8q8q8u2a9/)
 
 # Source Code Reference
 - [python pillow](https://pillow.readthedocs.io/en/stable/reference/Image.html)

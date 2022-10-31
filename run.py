@@ -3,6 +3,10 @@ from PIL import Image
 import math
 from functools import reduce
 from docx import Document
+from docx.text.run import Font
+from docx.dml.color import ColorFormat
+from docx.shared import RGBColor, Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 MAX_COLOR_VALUE = 255
 
@@ -66,15 +70,39 @@ def write_rtf(dest, image, ascii_chars, palette, font_size):
 	with open(f"{dest}.rtf", "w") as f:
 		f.write(rtf_txt)
 
-def write_docx(dest, image, ascii_chars, palette, font_size):
+def write_docx(dest, image, ascii_chars, font_size):
 	document = Document()
+	styles = document.styles['Normal']
+	font = styles.font
+	font.name = 'Consolas'
+	font.size = Pt(font_size)
 	p = document.add_paragraph()
-	
+	p_format = p.paragraph_format
+	p_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+	p_format.left_indent = Pt(0)
+	p_format.right_indent = Pt(0)
+	p_format.space_before = Pt(0)
+	p_format.space_after = Pt(0)
+	p_format.line_spacing = Pt(font_size)
+
 	width, height = image.size
 	grayscaled_image = grayscale_image(image)
 	pixels = image.getdata()
 	grayscale_pixels = grayscaled_image.getdata()
 	divider = math.ceil(MAX_COLOR_VALUE / (len(ascii_chars) - 1))
+	for y in range(height):
+		for x in range(width):
+			z = y * width + x
+			grayscale_pixel = grayscale_pixels[z]
+			pixel = pixels[z][:3]
+			r, g, b = pixel
+			char = ascii_chars[grayscale_pixel // divider]
+			run = p.add_run(char)
+			font = run.font
+			font.color.rgb = RGBColor(r, g, b)
+		p.add_run('\n')
+
+	document.save(f"{dest}.docx")
 
 def main():
 	ascii_chars_file = open("ascii_characters.txt", "r")
@@ -113,13 +141,16 @@ def main():
 	elif resample == "BICUBIC": resample = Image.BICUBIC
 	elif resample == "BOX": resample = Image.BOX
 	elif resample == "HAMMING": resample = Image.HAMMING
-	font_size = parser.parse_args().FONTSIZE << 1
+	font_size = parser.parse_args().FONTSIZE
 
 	if False: pass
 	elif format == "txt":
 		write_raw_txt(dest, grayscale_image(resize_image(image, scale, resample)), ascii_chars)
 	elif format == "rtf":
-		write_rtf(dest, resize_image(image, scale, resample), ascii_chars, palette, font_size)
+		write_rtf(dest, resize_image(image, scale, resample), ascii_chars, palette, font_size << 1)
+	elif format == "docx":
+		write_docx(dest, resize_image(image, scale, resample), ascii_chars, font_size)
+
 	ascii_chars_file.close()
 
 if __name__ == '__main__':

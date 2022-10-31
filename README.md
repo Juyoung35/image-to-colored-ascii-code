@@ -1,6 +1,8 @@
 # image-to-colored-ascii-code
 This program converts image file to ascii code texts such as .txt, .rtf, .docs, .html
 
+![image](image.PNG)
+
 # how to run this program
 do `python run.py -h` in terminal to get help about running run.py
 

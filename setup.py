@@ -7,5 +7,10 @@ install_requires = [
 
 setup(
     name="image=-to-colored-ascii-code",
-    description="This program converts image file to ascii code texts such as .txt, .rtf, .docs, .html"
+    version="0.1",
+    description="This program converts image file to ascii code texts such as .txt, .rtf, .docs, .html",
+    author="Juyoung35",
+    author_email="justin350518@gmail.com",
+    packages=find_packages(),
+    install_requires=install_requires
 )

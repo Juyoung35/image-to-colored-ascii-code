@@ -1,5 +1,5 @@
 # image-to-colored-ascii-code
-This program converts image file to ascii code texts or colored ascii code image
+This program converts image file to ascii code texts such as .txt, .rtf, .docs, .html
 
 ## Blueprint
 input by command line

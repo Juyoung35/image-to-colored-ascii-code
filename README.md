@@ -1,20 +1,8 @@
 # image-to-colored-ascii-code
 This program converts image file to ascii code texts such as .txt, .rtf, .docs, .html
 
-## Blueprint
-input by command line
----------------------
-Usage: python main.py SOURCE [s=SCALE] [d=DEST] [f=FORMAT]  
-This program converts SOURCE image file to output file named DEST with FORMAT extension with resized scale by SCALE.  
-  
-OPTION:  
-  -s, --scale=SCALE					resize SOURCE image file by SCALE. if not given, size will be same.
-  -d, --dst, --destination=DEST		set output file name with DEST.
-  -f, --format=FORMAT				set output file format. if not given, format will be same.
-  
-If FORMAT is raw text-like format that doesn't support colored text, it just return output from grayscale of input file.  
-If DEST and FORMAT are not given, then it will return output with slightly different name with source file.  
-Available FORMAT: .txt, .docx, .rtf, .html
+# how to run this program
+do `python run.py -h' in terminal to get help about running run.py
 
 # Image Reference
 - Sample Image 0: sample-image-0.jpg by [Sharon Pittaway](https://unsplash.com/photos/iMdsjoiftZo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink)
@@ -28,6 +16,7 @@ Available FORMAT: .txt, .docx, .rtf, .html
 - [how to use python setup(Korean)](https://www.flowdas.com/blog/%ED%8C%8C%EC%9D%B4%EC%8D%AC-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-setuptools/)
 - [python-docx documentation](https://python-docx.readthedocs.io/en/latest/)
 - [RTF Version 1.5 Specification](https://www.biblioscape.com/rtf15_spec.htm)
+
 # get output file with cli
 - sample-image-0.txt: `python run.py input/sample-image-0.jpg -s 0.04 -d output/sample-image-0 -f txt`
 - sample-image-0.rtf: `python run.py input/sample-image-0.jpg -s 0.08 -d output/sample-image-0 -f rtf -p 8 -rs LANCZOS -fs 2`

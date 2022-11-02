@@ -9,6 +9,7 @@ from docx.shared import RGBColor, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 MAX_COLOR_VALUE = 255
+DOCX_LINE_SPACING_RATIO = 0.55 # 473 / 863
 
 def get_resized_size(width_and_height: tuple, scale):
     return tuple(map(lambda x: int(x * scale), width_and_height))
@@ -70,7 +71,7 @@ def write_rtf(dest, image, ascii_chars, palette, font_size):
 	with open(f"{dest}.rtf", "w") as f:
 		f.write(rtf_txt)
 
-def write_docx(dest, image, ascii_chars, font_size):
+def write_docx(dest, image, ascii_chars, font_size, line_spacing):
 	document = Document()
 	styles = document.styles['Normal']
 	font = styles.font
@@ -83,7 +84,7 @@ def write_docx(dest, image, ascii_chars, font_size):
 	p_format.right_indent = Pt(0)
 	p_format.space_before = Pt(0)
 	p_format.space_after = Pt(0)
-	p_format.line_spacing = Pt(font_size)
+	p_format.line_spacing = Pt(font_size * (1 if line_spacing else DOCX_LINE_SPACING_RATIO))
 
 	width, height = image.size
 	grayscaled_image = grayscale_image(image)
@@ -104,6 +105,39 @@ def write_docx(dest, image, ascii_chars, font_size):
 
 	document.save(f"{dest}.docx")
 
+def write_html(dest, image, ascii_chars, font_size, line_spacing):
+	html_txt = ""
+	html_txt += "<!DOCTYPE HTML>" + '\n'
+	html_txt += "<html>" + '\n'
+	html_txt += "<body>" + '\n'
+	html_txt += "<style type=\"text/css\">" + '\n'
+	html_txt += "\tspan {" + '\n'
+	html_txt += f"\t\tfont-size: {font_size}px;" + '\n'
+	html_txt += "\t\tfont-weight: bold;" + '\n'
+	html_txt += "\t\tfont-family: monospace;" + '\n'
+	html_txt += '\t}' + '\n'
+	html_txt += "</style>" + '\n'
+	
+	width, height = image.size
+	grayscaled_image = grayscale_image(image)
+	pixels = image.getdata()
+	grayscale_pixels = grayscaled_image.getdata()
+	divider = math.ceil(MAX_COLOR_VALUE / (len(ascii_chars) - 1))
+	for y in range(height):
+		for x in range(width):
+			z = y * width + x
+			grayscale_pixel = grayscale_pixels[z]
+			pixel = pixels[z][:3]
+			r, g, b = pixel
+			char = ascii_chars[grayscale_pixel // divider]
+			html_txt += f"<span style=\"color: #{r:02x}{g:02x}{b:02x}\">{char}</span>"
+		html_txt += "<br>"
+
+	html_txt += "</body>" + '\n'
+	html_txt += "</html>"
+	with open(f"{dest}.html", "w") as f:
+		f.write(html_txt)
+
 def main():
 	ascii_chars_file = open("ascii_characters.txt", "r")
 	ascii_chars = ascii_chars_file.readlines()
@@ -118,6 +152,7 @@ def main():
 	parser.add_argument("-p", "--palette", nargs='?', dest="PALETTE", help="limit the palette color in PALETTE^3 numbers if output file format support color", default=8, type=int)
 	parser.add_argument("-rs", "--resample", nargs='?', dest="RESAMPLE", help="resampleing filter used in resizing the image. Available filters: LANCZOS(default), BICUBIC, HAMMING, BILINEAR, BOX, NEAREST", default='LANCZOS', type=str)
 	parser.add_argument("-fs", "--fontsize", nargs='?', dest="FONTSIZE", help="set size of the font.", default=10, type=int)
+	parser.add_argument("-ls", "--linespacing", dest="LINESPACING", help="line spacing excatly as font size in .docx file format. it will size up the height, not the width. if not, image ratio will be same.", default=False, action='store_true')
 
 	src = parser.parse_args().SOURCE[0]
 	try:
@@ -142,6 +177,7 @@ def main():
 	elif resample == "BOX": resample = Image.BOX
 	elif resample == "HAMMING": resample = Image.HAMMING
 	font_size = parser.parse_args().FONTSIZE
+	line_spacing = parser.parse_args().LINESPACING
 
 	if False: pass
 	elif format == "txt":
@@ -149,8 +185,9 @@ def main():
 	elif format == "rtf":
 		write_rtf(dest, resize_image(image, scale, resample), ascii_chars, palette, font_size << 1)
 	elif format == "docx":
-		write_docx(dest, resize_image(image, scale, resample), ascii_chars, font_size)
-
+		write_docx(dest, resize_image(image, scale, resample), ascii_chars, font_size, line_spacing)
+	elif format == "html":
+		write_html(dest, resize_image(image, scale, resample), ascii_chars, font_size, line_spacing)
 	ascii_chars_file.close()
 
 if __name__ == '__main__':
